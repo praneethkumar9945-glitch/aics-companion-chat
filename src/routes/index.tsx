@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useState, type FormEvent } from "react";
+import { useEffect, useState, type FormEvent } from "react";
 import hero from "@/assets/aics-hero.jpg";
 
 export const Route = createFileRoute("/")({
@@ -40,6 +40,21 @@ const agenda = [
 
 const words = ["Machine Learning", "Neural Networks", "LLMs", "Robotics", "Agents", "Vision", "Data Science", "Ethics"];
 
+const rotatingWords = ["builders", "creators", "innovators", "researchers"];
+
+function RotatingWord() {
+  const [i, setI] = useState(0);
+  useEffect(() => {
+    const id = setInterval(() => setI((v) => (v + 1) % rotatingWords.length), 2400);
+    return () => clearInterval(id);
+  }, []);
+  return (
+    <span key={i} className="animate-word-swap inline-block text-gradient-shimmer">
+      {rotatingWords[i]}
+    </span>
+  );
+}
+
 function Index() {
   return (
     <div className="min-h-screen overflow-x-hidden bg-background text-foreground">
@@ -61,19 +76,25 @@ function Index() {
       </header>
 
       {/* Hero */}
-      <section className="relative flex min-h-screen items-end">
-        <img src={hero} alt="AICS summit stage with a glowing neural network" width={1920} height={1088} className="absolute inset-0 h-full w-full object-cover" />
+      <section className="relative flex min-h-screen items-end overflow-hidden">
+        <img src={hero} alt="AICS summit stage with a glowing neural network" width={1920} height={1088} className="animate-kenburns absolute inset-0 h-full w-full object-cover" />
         <div className="absolute inset-0 bg-gradient-to-t from-background via-background/60 to-background/10" />
-        <div className="relative mx-auto w-full max-w-6xl px-6 pb-20 pt-40">
+        {/* Floating glow orbs */}
+        <div aria-hidden className="pointer-events-none absolute inset-0">
+          <div className="animate-float absolute -left-24 top-1/4 h-80 w-80 rounded-full bg-gradient-brand opacity-20 blur-[110px]" />
+          <div className="animate-float absolute right-0 top-1/3 h-96 w-96 rounded-full bg-gradient-brand opacity-15 blur-[130px]" style={{ animationDelay: "2s" }} />
+          <div className="animate-float absolute bottom-10 left-1/3 h-72 w-72 rounded-full bg-gradient-brand opacity-10 blur-[110px]" style={{ animationDelay: "4s" }} />
+        </div>
+        <div className="relative mx-auto w-full max-w-6xl px-6 pb-28 pt-40">
           <div className="animate-rise mb-6 inline-flex items-center gap-2 rounded-full glass px-4 py-1.5 text-xs uppercase tracking-[0.2em] text-muted-foreground">
             <span className="relative flex h-2 w-2"><span className="animate-pulse-ring absolute inset-0 rounded-full bg-lime" /><span className="relative h-2 w-2 rounded-full bg-lime" /></span>
             Registrations open · Dates announcing soon
           </div>
           <h1 className="animate-rise text-[clamp(64px,14vw,200px)] font-bold leading-[0.85] tracking-tighter" style={{ animationDelay: "0.1s" }}>
-            <span className="text-gradient">AICS</span>
+            <span className="text-gradient-shimmer">AICS</span>
           </h1>
           <p className="animate-rise mt-4 font-display text-[clamp(22px,3vw,40px)] font-medium" style={{ animationDelay: "0.25s" }}>
-            The AI Summit for the next generation of builders.
+            The AI Summit for the next generation of <RotatingWord />.
           </p>
           <p className="animate-rise mt-4 max-w-xl text-muted-foreground" style={{ animationDelay: "0.4s" }}>
             A day of keynotes, live demos and hands-on workshops exploring where artificial intelligence goes next.
@@ -81,6 +102,12 @@ function Index() {
           <div className="animate-rise mt-8 flex flex-wrap gap-4" style={{ animationDelay: "0.55s" }}>
             <a href="#register" className="rounded-full bg-gradient-brand px-8 py-4 font-bold text-primary-foreground shadow-glow transition-transform hover:scale-105">Register now →</a>
             <a href="#about" className="glass rounded-full px-8 py-4 font-medium transition-colors hover:bg-secondary">Explore summit</a>
+          </div>
+        </div>
+        <div aria-hidden className="animate-rise absolute inset-x-0 bottom-7 flex justify-center" style={{ animationDelay: "0.9s" }}>
+          <div className="flex flex-col items-center gap-2 text-muted-foreground">
+            <span className="text-[10px] uppercase tracking-[0.35em]">Scroll</span>
+            <span className="animate-bounce-soft text-lime text-lg">↓</span>
           </div>
         </div>
       </section>
