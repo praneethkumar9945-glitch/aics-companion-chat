@@ -76,7 +76,7 @@ function Index() {
       </header>
 
       {/* Hero */}
-      <section className="relative flex min-h-screen items-end overflow-hidden">
+      <section id="hero" className="relative flex min-h-screen items-end overflow-hidden" onMouseMove={handleHeroTilt}>
         <img src={hero} alt="AICS summit stage with a glowing neural network" width={1920} height={1088} className="animate-kenburns absolute inset-0 h-full w-full object-cover" />
         <div className="absolute inset-0 bg-gradient-to-t from-background via-background/60 to-background/10" />
         {/* Floating glow orbs */}
@@ -85,26 +85,60 @@ function Index() {
           <div className="animate-float absolute right-0 top-1/3 h-96 w-96 rounded-full bg-gradient-brand opacity-15 blur-[130px]" style={{ animationDelay: "2s" }} />
           <div className="animate-float absolute bottom-10 left-1/3 h-72 w-72 rounded-full bg-gradient-brand opacity-10 blur-[110px]" style={{ animationDelay: "4s" }} />
         </div>
-        <div className="relative mx-auto w-full max-w-6xl px-6 pb-28 pt-40">
+        {/* Rising ember sparks */}
+        <div aria-hidden className="pointer-events-none absolute inset-0 overflow-hidden">
+          {embers.map((e, i) => (
+            <span
+              key={i}
+              className="animate-ember absolute bottom-0 h-1.5 w-1.5 rounded-full bg-accent"
+              style={{
+                left: `${e.left}%`,
+                ["--dur" as string]: `${e.dur}s`,
+                ["--drift" as string]: `${e.drift}px`,
+                animationDelay: `${e.delay}s`,
+                filter: "drop-shadow(0 0 6px var(--accent))",
+              }}
+            />
+          ))}
+        </div>
+        {/* Light sweep beams */}
+        <div aria-hidden className="pointer-events-none absolute inset-0 overflow-hidden opacity-40">
+          <div className="animate-sweep absolute -top-1/4 h-[150%] w-32 bg-gradient-to-b from-transparent via-primary/25 to-transparent" />
+          <div className="animate-sweep-delay absolute -top-1/4 h-[150%] w-24 bg-gradient-to-b from-transparent via-accent/20 to-transparent" />
+        </div>
+        <div
+          ref={tiltRef}
+          className="relative mx-auto w-full max-w-6xl px-6 pb-28 pt-40"
+          style={{ transform: tiltStyle, transition: "transform 150ms ease-out", transformStyle: "preserve-3d" }}
+        >
           <div className="animate-rise mb-6 inline-flex items-center gap-2 rounded-full glass px-4 py-1.5 text-xs uppercase tracking-[0.2em] text-muted-foreground">
             <span className="relative flex h-2 w-2"><span className="animate-pulse-ring absolute inset-0 rounded-full bg-lime" /><span className="relative h-2 w-2 rounded-full bg-lime" /></span>
             Registrations open · Dates announcing soon
           </div>
-          <h1 className="animate-rise text-[clamp(64px,14vw,200px)] font-bold leading-[0.85] tracking-tighter" style={{ animationDelay: "0.1s" }}>
-            <span className="text-gradient-shimmer">AICS</span>
+          <h1 className="relative text-[clamp(64px,14vw,200px)] font-bold leading-[0.85] tracking-tighter" style={{ perspective: "800px" }}>
+            <span aria-hidden className="pointer-events-none absolute inset-0 flex justify-center opacity-30 blur-2xl">
+              <span className="text-gradient font-bold">AICS</span>
+            </span>
+            <span className="relative flex">
+              {["A", "I", "C", "S"].map((ch, i) => (
+                <span key={ch} className="animate-letter-drop inline-block text-gradient-shimmer" style={{ animationDelay: `${0.1 + i * 0.12}s` }}>
+                  {ch}
+                </span>
+              ))}
+            </span>
           </h1>
-          <p className="animate-rise mt-4 font-display text-[clamp(22px,3vw,40px)] font-medium" style={{ animationDelay: "0.25s" }}>
+          <p className="animate-rise mt-4 font-display text-[clamp(22px,3vw,40px)] font-medium" style={{ animationDelay: "0.6s" }}>
             The AI Summit for the next generation of <RotatingWord />.
           </p>
-          <p className="animate-rise mt-4 max-w-xl text-muted-foreground" style={{ animationDelay: "0.4s" }}>
+          <p className="animate-rise mt-4 max-w-xl text-muted-foreground" style={{ animationDelay: "0.75s" }}>
             A day of keynotes, live demos and hands-on workshops exploring where artificial intelligence goes next.
           </p>
-          <div className="animate-rise mt-8 flex flex-wrap gap-4" style={{ animationDelay: "0.55s" }}>
+          <div className="animate-rise mt-8 flex flex-wrap gap-4" style={{ animationDelay: "0.9s" }}>
             <a href="#register" className="rounded-full bg-gradient-brand px-8 py-4 font-bold text-primary-foreground shadow-glow transition-transform hover:scale-105">Register now →</a>
             <a href="#about" className="glass rounded-full px-8 py-4 font-medium transition-colors hover:bg-secondary">Explore summit</a>
           </div>
         </div>
-        <div aria-hidden className="animate-rise absolute inset-x-0 bottom-7 flex justify-center" style={{ animationDelay: "0.9s" }}>
+        <div aria-hidden className="animate-rise absolute inset-x-0 bottom-7 flex justify-center" style={{ animationDelay: "1.2s" }}>
           <div className="flex flex-col items-center gap-2 text-muted-foreground">
             <span className="text-[10px] uppercase tracking-[0.35em]">Scroll</span>
             <span className="animate-bounce-soft text-lime text-lg">↓</span>
