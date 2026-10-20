@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useEffect, useState, type FormEvent } from "react";
+import { useEffect, useRef, useState, type FormEvent } from "react";
 import hero from "@/assets/aics-hero.jpg";
 
 export const Route = createFileRoute("/")({
@@ -41,6 +41,22 @@ const agenda = [
 const words = ["Machine Learning", "Neural Networks", "LLMs", "Robotics", "Agents", "Vision", "Data Science", "Ethics"];
 
 const rotatingWords = ["builders", "creators", "innovators", "researchers"];
+
+const embers = Array.from({ length: 18 }, (_, i) => ({
+  left: (i * 53) % 100,
+  dur: 7 + ((i * 37) % 6),
+  drift: ((i * 71) % 120) - 60,
+  delay: (i * 0.9) % 8,
+}));
+
+function useHeroTilt() {
+  const ref = useRef<HTMLDivElement>(null);
+  const [tilt, setTilt] = useState<{ x: number; y: number }>({ x: 0, y: 0 });
+  useEffect(() => {
+    setTilt({ x: 0, y: 0 });
+  }, []);
+  return { ref, tilt, setTilt };
+}
 
 function RotatingWord() {
   const [i, setI] = useState(0);
